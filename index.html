@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="utf-8"/>
+    <meta name="viewport" content="device-width">
+    <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
+    <link rel="stylesheet" href="jquery.mobile-1.4.5.min.css" />
+    <script src="jquery.js"></script>
+    <script src="jquery.mobile-1.4.5.min.js"></script>
+    <title>ProFitness</title>
+</head>
+<body>
+	<!--Início do Documento -->
+    <!--Início da primeria página -->
+	<div data-role="page" id="imc">
+        <header data-role="header" data-position="fixed">
+            <h2>ProFitness</h2>
+			<!--Início do menu -->
+            <nav data-role="navbar" data-position="fixed">
+                <ul>
+                    <li>
+                        <a href="#imc" class="ui-btn-active"  data-icon="bullets">IMC</a>
+                    </li>
+                    <li>
+                        <a href="#mtb" data-icon="clock">Metabolismo Basal</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+		<!--Início do contexto da primeira página -->
+        <section data-role="content">
+            <form>
+                <label for="altura_mtb">Altura</label>
+                <input type="range" id="altura" value="170" min="1" max="300" />
+                <label for="peso">Peso</label>
+                <input type="range" name="peso" id="peso" value="70" min="1" max="300" />                
+                <a href="#popupBasic" data-rel="popup" id="calcular" data-icon="gear"  data-iconpos="right" data-role="button" data-transition="pop">Calcular</a>
+                <div data-role="popup" id="popupBasic">
+                    <p id="imc"></p>
+                </div>
+            </form>
+        </section>
+        <footer data-role="footer">
+            <small class="ui-bar">ProFitness</small>
+        </footer>
+    </div>
+	<!--Início da segunda página -->
+    <div data-role="page" id="mtb">
+        <header data-role="header" data-position="fixed">
+            <h2>ProFitness</h2>
+			<!--Início do menu -->
+            <nav data-role="navbar" data-position="fixed">
+                <ul>
+                    <li>
+                        <a href="#imc"  data-icon="bullets">IMC</a>
+                    </li>
+                    <li>
+                        <a href="#mtb" class="ui-btn-active" data-icon="clock">Metabolismo Basal</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+		<!--Início do contexto da segunda página -->
+        <section data-role="content">
+            <form>
+                <label for="altura_mtb">Altura</label>
+                <input type="range" id="altura_mtb" value="170" min="1" max="300" />
+                <label for="peso_mtb">Peso</label>
+                <input type="range" id="peso_mtb" value="70" min="1" max="300" />
+                <label for="idade">Idade</label>
+                <input type="range" name="idade" id="idade" value="18" min="1" max="120" />
+                <fieldset data-role="controlgroup">
+                    <legend>Sexo:</legend>
+                    <input type="radio" name="sexo" id="rdfm" value="F" checked="checked" />
+                    <label for="rdfm">Feminino</label>
+                    <input type="radio" name="sexo" id="rdma" value="M" />
+                    <label for="rdma">Masculino</label>
+                </fieldset>
+                <label for="atividade" class="select">Nível de Atividade:</label>
+                <select name="atividade" id="atividade">
+                    <option value="1.2" selected>Pessoas sedentárias</option>
+                    <option value="1.375">Atividade ligeira (1 a 3 vezes por semana)</option>
+                    <option value="1.55">Atividade moderada (3 a 5 vezes por semana)</option>
+                    <option value="1.725">Atividade intensa (6 a 7 vezes por semana)</option>
+                    <option value="1.9">Atividade extremamente alta (atletas profissionais)</option>
+                </select>                
+                <a href="#popupmtb" data-rel="popup" id="calc_mtb" data-icon="gear" data-iconpos="right" data-role="button" data-transition="pop">Calcular</a>
+                <div data-role="popup" id="popupmtb">
+                    <p id="mtb"></p>
+                </div>
+            </form>
+        </section>
+        <footer data-role="footer">
+            <small class="ui-bar">ProFitness</small>
+        </footer>
+    </div>
+    <script>
+        /* < 15 Extremamente abaixo do peso 
+        <16 Gravemente abaixo do peso
+        <18,5 Abaixo do peso Ideal
+        <25 Faixa de peso Ideal
+        <30 Sobrepeso
+        <35 Obesidade grau I
+        <40 Obesidade grau II( GRAVE)
+        >40 Obesidade grau III ( MÓRBIDA ) */
+		//Função para calcular IMC 
+        $("#calcular").click(function () {
+            var peso = $('#peso').val();
+            var altura = $('#altura').val()/100;
+            var msg = '';
+            var imc = '';
+            if (peso > 0 && altura != "") {
+                imc = peso / (altura * altura);
+                if (imc < 15) {
+                    msg = ' Extremamente abaixo do peso';
+                } else if (imc < 16) {
+                    msg = ' Gravemente abaixo do peso';
+                } else if (imc < 18.5) {
+                    msg = ' Abaixo do peso Ideal';
+                } else if (imc < 25) {
+                    msg = ' Faixa de peso Ideal';
+                } else if (imc < 30) {
+                    msg = ' Sobrepeso';
+                } else if (imc < 35) {
+                    msg = ' Obesidade grau I';
+                } else if (imc < 40) {
+                    msg = ' Obesidade grau II( GRAVE)';
+                } else {
+                    msg = '  Obesidade grau III ( MÓRBIDA )';
+                } 				
+                $("#popupBasic").text(msg);    
+				$("#peso").val(70);
+				$("#altura").val(170);				
+            } else {
+                $("#popupBasic").text("Preencha sua Altura!");
+                $("#altura").focus();                
+            }
+        });
+
+        /*para calcular a quantidade de calorias () Harris-Benedict)
+        Mulheres
+        •	[655 + (9.6 x Peso kg) ] + [ (1.8 x Altura cm) – (4.7 x Idade)] x Fator atividade
+        Homens
+        •	[66 + (13.7 x Peso kg) ] + [ (5 x Altura cm) – (6.8 x Idade)] x Fator atividade
+        O fator de atividade é o seguinte:
+        •	Pessoas sedentárias: 1.2
+        •	Atividade ligeira (1 a 3 vezes por semana): 1.375
+        •	Atividade moderada (3 a 5 vezes por semana): 1.55
+        •	Atividade intensa (6 a 7 vezes por semana): 1.725
+        •	Atividade extremamente alta (atletas profissionais): 1.9*/
+		//Função para calcular Metabolismo Basal 
+        $("#calc_mtb").click(function () {
+            var peso = $('#peso_mtb').val();
+            var altura = $('#altura_mtb').val();
+            var sexo = '';
+            var fator = $("#atividade").val();
+            var idade = $("#idade").val();
+            var mtb = '';
+
+            if (peso > 0 && altura != "") {
+                sexo = $("input[name='sexo']:checked").val();
+                if (sexo === "F") {
+                    mtb = (655 + (9.6 * peso)) + ((1.8 * altura) - (4.7 * idade)) * fator;
+                } else {
+                    mtb = (66 + (13.7 * peso)) + ((5 * altura) - (6.8 * idade)) * fator;
+                }
+                $("#popupmtb").text("Seu Gasto calórico é: " + mtb.toFixed(0));				
+				$("#peso_mtb").val(70);
+				$("#altura_mtb").val(170);				
+            } else {
+                $("#popupmtb").text("Preencha sua Altura!");
+                $("#altura_mtb").focus();
+            }
+        });				
+    </script>
+</body>
+
+</html>
